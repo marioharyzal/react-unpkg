@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Learn React</title>
+		<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+		<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="text/babel">
+			const Header = ({ name }) => (
+				<div>
+					<h2>Hello {name ? name : "Default"} 🚀</h2>
+				</div>
+			);
+
+			const Monitor = ({ like }) => <p>{like < 1 ? "No Like 😒" : `${like} 👍`}</p>;
+
+			const Button = ({ actionButton, like }) => {
+				return (
+					<>
+						<button onClick={() => actionButton("increase")}>+</button>
+						{like < 1 ? <button disabled>-</button> : <button onClick={() => actionButton("decrease")}>-</button>}
+						<button onClick={() => actionButton("reset")}>Reset</button>
+					</>
+				);
+			};
+
+			const ButtonContainer = ({ actionButton, like }) => {
+				return (
+					<div>
+						<Button actionButton={actionButton} like={like} />
+					</div>
+				);
+			};
+
+			const HomePage = () => {
+				const hobbies = ["reading 📖", "playing football ⚽", "watching movie 👀"];
+				const [like, setLike] = React.useState(0);
+				const handleClick = (action) => {
+					action == "reset" ? setLike(0) : action == "increase" ? setLike(like + 1) : setLike(like - 1);
+				};
+
+				return (
+					<div>
+						<Header name="Mario Haryzal" />
+						<ul>
+							{hobbies.map((hobby) => (
+								<li key={hobby}>{hobby}</li>
+							))}
+						</ul>
+						<Monitor like={like} />
+						<ButtonContainer actionButton={handleClick} like={like} />
+					</div>
+				);
+			};
+
+			const container = document.getElementById("root");
+			const root = ReactDOM.createRoot(container);
+			root.render(<HomePage />);
+		</script>
+	</body>
+</html>
